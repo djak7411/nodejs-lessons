@@ -1,0 +1,22 @@
+const webSocket = require('ws');
+const SERVER = webSocket.Server;
+const PORT = 3001;
+
+let ws = new SERVER({port:PORT});
+let messages = [];
+console.log('server started');
+
+ws.on('connection', function(socket){
+    console.log('client connected');
+    messages.forEach(function(msg){
+        socket.send(msg);
+    });
+
+    socket.on('message', function(data){
+        console.log('message send: '+data);
+        messages.push(data);
+        ws.clients.forEach(function(clientSocket){
+            clientSocket.send(data);
+        });
+    });
+});
