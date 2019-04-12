@@ -1,6 +1,7 @@
 const extrModule = require('./extract');
-const PORT = 3000; //порт который будем прослушивать
+const PORT = 80; //порт который будем прослушивать
 const FS = require('fs');
+const WSS = require('./server');
 const handleError = function (err, response) {
     response.writeHead(404);
     let page404 = extrModule(404);
@@ -16,10 +17,10 @@ const SERVER = HTTP.createServer(function(request, response){
     let url = request.url; //в объекте request хранится url запроса
     filePath = extrModule(url);
     FS.readFile(filePath,function(err,data){
-        if (err) {
-            handleError(err,response);
-            return;
-        } 
+        // if (err) {
+        //     handleError(err,response);
+        //     return;
+        // } 
         response.end(data);
     });
 }); //создаем сервер и передаем событие, срабатывающее на сервере при получении HTTP-запроса
